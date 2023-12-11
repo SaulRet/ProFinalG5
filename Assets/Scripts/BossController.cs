@@ -2,11 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
-
 public class BossController : MonoBehaviour
-
 {
     public GameObject prefabBala;
     public Transform puntoDisparo;
@@ -15,6 +11,15 @@ public class BossController : MonoBehaviour
     [Range(0.1F, 1.0F)]
     float firerate = 0.3F;
     float _fireTimer;
+
+    [SerializeField]
+    float maxHealth = 500.0f; // Ajusta la salud máxima del jefe según sea necesario
+    private float currentHealth;
+
+    void Start()
+    {
+        currentHealth = maxHealth;
+    }
 
     void Update()
     {
@@ -39,4 +44,16 @@ public class BossController : MonoBehaviour
         }
     }
 
+    public void TakeDamage(float damage)
+    {
+        // Aplicar daño al enemigo
+        currentHealth -= damage;
+
+        if (currentHealth <= 0)
+        {
+            // Puedes agregar más lógica aquí si deseas realizar alguna acción específica al eliminar al enemigo
+            Destroy(gameObject);
+        }
+        Destroy(gameObject);
+    }
 }

@@ -230,13 +230,26 @@ public class Character2DController : MonoState<Character2DController>
         {
             // Verificar si el objeto con el que colisionamos es un enemigo
             EnemyController enemy = collider.GetComponent<EnemyController>();
+
             if (enemy != null)
             {
                 // Aplicar daño o eliminar al enemigo
                 enemy.TakeDamage(_meleeDamage);
             }
+            else
+            {
+                // Si no es un enemigo, verifica si es un jefe
+                BossController boss = collider.GetComponent<BossController>();
+
+                if (boss != null)
+                {
+                    // Aplicar daño o eliminar al jefe
+                    boss.TakeDamage(_meleeDamage);
+                }
+            }
         }
     }
+
 
     IEnumerator ResetAttackState()
     {

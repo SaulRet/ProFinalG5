@@ -5,11 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - PlataformaMortal
+  - Bullet
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - BalaLayer
   - Water
   - UI
   - Ground
