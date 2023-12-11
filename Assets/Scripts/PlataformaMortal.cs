@@ -7,19 +7,18 @@ public class PlataformaMortal : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            // Obt?n el componente HealthController del jugador y llama al m?todo HandlePlayerDeath
+            // Se obtiene el componente HealthController del jugador y se llama al método HandlePlayerDeath
             HealthController playerHealth = other.GetComponent<HealthController>();
             if (playerHealth != null)
             {
                 playerHealth.HandlePlayerDeath();
-                // Puedes agregar aqu? la l?gica para mostrar el men? de Game Over
                 MostrarMenuGameOver();
             }
         }
     }
     private void MostrarMenuGameOver()
     {
-        // Busca el objeto con el script MenuGameOver y activa el men? Game Over
+        // Se busca el objeto con el script MenuGameOver y activa el menú Game Over
         MenuGameOver menuGameOver = FindObjectOfType<MenuGameOver>();
         if (menuGameOver != null)
         {

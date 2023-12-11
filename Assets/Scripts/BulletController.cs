@@ -25,12 +25,11 @@ public class BulletController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            // Obtén el componente HealthController del jugador y llama al método HandlePlayerDeath
+            // Se obtiene el componente HealthController del player y llama al método HandlePlayerDeath
             HealthController playerHealth = collision.gameObject.GetComponent<HealthController>();
             if (playerHealth != null)
             {
                 playerHealth.HandlePlayerDeath();
-                // Puedes agregar aquí la lógica para mostrar el menú de Game Over
                 MostrarMenuGameOver();
             }
         }
@@ -39,7 +38,7 @@ public class BulletController : MonoBehaviour
 
     private void MostrarMenuGameOver()
     {
-        // Busca el objeto con el script MenuGameOver y activa el menú Game Over
+        // Se bsca el objeto con el script MenuGameOver y activa el menú de Game Over
         MenuGameOver menuGameOver = FindObjectOfType<MenuGameOver>();
         if (menuGameOver != null)
         {

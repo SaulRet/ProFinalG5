@@ -15,12 +15,11 @@ public class EnemyController : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        // Aplicar daño al enemigo
+        // Se aplica daño al enemigo
         currentHealth -= damage;
 
         if (currentHealth <= 0)
         {
-            // Puedes agregar más lógica aquí si deseas realizar alguna acción específica al eliminar al enemigo
             Destroy(gameObject);
         }
     }
@@ -41,12 +40,12 @@ public class EnemyController : MonoBehaviour
                 HealthController controller = other.collider.GetComponent<HealthController>();
                 if (controller != null)
                 {
-                    float damage = 10.0f; // Ajusta este valor según sea necesario
-                    // Aplicar daño al jugador
+                    float damage = 10.0f; 
+                    // Se aplicar daño al jugador
                     controller.TakeDamage(damage, contactPoint);
 
-                    // Eliminar al enemigo después de infligir daño al jugador
-                    TakeDamage(damage); // Puedes ajustar el daño para que el enemigo se elimine inmediatamente
+                    // Se elimina al enemigo luego de infligir daño al jugador
+                    TakeDamage(damage); 
                 }
 
             }

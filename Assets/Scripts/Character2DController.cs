@@ -215,7 +215,7 @@ public class Character2DController : MonoState<Character2DController>
 
         animator.SetBool("attack", true);
 
-        // Retraso antes de verificar colisiones para dar tiempo a la animación de ataque
+        // Se hace una corutina de retraso antes de verificar colisiones para dar tiempo a la animación de ataque
         StartCoroutine(DelayedAttackCheck());
 
         StartCoroutine(ResetAttackState());
@@ -228,32 +228,31 @@ public class Character2DController : MonoState<Character2DController>
         Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius);
         foreach (Collider2D collider in enemies)
         {
-            // Verificar si el objeto con el que colisionamos es un enemigo
+            // Se verifica si el objeto con el que se colisiona es un enemigo
             EnemyController enemy = collider.GetComponent<EnemyController>();
 
             if (enemy != null)
             {
-                // Aplicar daño o eliminar al enemigo
+                // Se aplicar daño al enemigo
                 enemy.TakeDamage(_meleeDamage);
             }
             else
             {
-                // Si no es un enemigo, verifica si es un jefe
+                // Se verifica si es un jefe o un enemigo normal
                 BossController boss = collider.GetComponent<BossController>();
 
                 if (boss != null)
                 {
-                    // Aplicar daño o eliminar al jefe
+                    // Aplicar daño al jefe
                     boss.TakeDamage(_meleeDamage);
                 }
             }
         }
     }
 
-
     IEnumerator ResetAttackState()
     {
-        yield return new WaitForSeconds(0.5f); // Ajusta el tiempo según la duración de tu animación de ataque
+        yield return new WaitForSeconds(0.5f); 
 
         _isAttacking = false;
         animator.SetBool("attack", false);

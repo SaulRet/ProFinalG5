@@ -13,7 +13,7 @@ public class BossController : MonoBehaviour
     float _fireTimer;
 
     [SerializeField]
-    float maxHealth = 500.0f; // Ajusta la salud máxima del jefe según sea necesario
+    float maxHealth = 500.0f; 
     private float currentHealth;
 
     void Start()
@@ -33,10 +33,10 @@ public class BossController : MonoBehaviour
 
     void Shoot()
     {
-        // Instancia la bala desde el prefab en la posición del punto de disparo
+        // Acá se instancia la bala desde el prefab en la posición del punto de disparo escogido
         GameObject bala = Instantiate(prefabBala, puntoDisparo.position, puntoDisparo.rotation);
 
-        // Accede al componente Rigidbody2D de la bala para aplicarle una velocidad
+        // Se accede al componente Rigidbody2D de la bala y se le aplica velocidad
         Rigidbody2D rbBala = bala.GetComponent<Rigidbody2D>();
         if (rbBala != null)
         {
@@ -46,12 +46,11 @@ public class BossController : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        // Aplicar daño al enemigo
+        //Código para daño al enemigo
         currentHealth -= damage;
 
         if (currentHealth <= 0)
         {
-            // Puedes agregar más lógica aquí si deseas realizar alguna acción específica al eliminar al enemigo
             Destroy(gameObject);
         }
         Destroy(gameObject);

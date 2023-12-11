@@ -33,14 +33,7 @@ public class HealthController : MonoBehaviour
 
         _characterController = Character2DController.Instance;
 
-        if (_characterController == null)
-        {
-            Debug.LogError("Character2DController.Instance is null. Make sure it's properly set up in your scene.");
-        }
-        else
-        {
-            _rb = GetComponent<Rigidbody2D>();
-        }
+        _rb = GetComponent<Rigidbody2D>();        
     }
 
     void Rebound(Vector2 contactPoint)
@@ -54,7 +47,7 @@ public class HealthController : MonoBehaviour
         if (health <= 0.0F)
         {
             MuerteJugador?.Invoke(this, EventArgs.Empty);
-            HandlePlayerDeath();  // Asegúrate de llamar HandlePlayerDeath también aquí si la salud llega a cero
+            HandlePlayerDeath();  // Se llama al HandlePlayerDeath si la salud llega a cero
         }
 
         _characterController.animator.SetTrigger("hit");

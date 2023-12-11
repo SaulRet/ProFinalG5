@@ -8201,7 +8201,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabBala: {fileID: 1656706647055237168, guid: ee4524ddada395246902a403e90dffc1, type: 3}
   puntoDisparo: {fileID: 1258303564}
-  velocidadBala: 5
+  velocidadBala: 3
   firerate: 1
   maxHealth: 500
 --- !u!1 &1819661745
