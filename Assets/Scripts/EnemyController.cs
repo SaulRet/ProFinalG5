@@ -5,6 +5,8 @@ public class EnemyController : MonoBehaviour
     [SerializeField]
     float maxHealth = 100.0f;
     private float currentHealth;
+    
+    
 
     void Start()
     {
@@ -46,7 +48,10 @@ public class EnemyController : MonoBehaviour
                     // Eliminar al enemigo después de infligir daño al jugador
                     TakeDamage(damage); // Puedes ajustar el daño para que el enemigo se elimine inmediatamente
                 }
+
+            }
+           
             }
         }
     }
-}
+

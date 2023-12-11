@@ -250,4 +250,12 @@ public class Character2DController : MonoState<Character2DController>
     {
         _rb.velocity = new Vector2(_rb.velocity.x, reboundY);
     }
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.tag == "Bullet")
+        {
+            Destroy(gameObject);
+            
+        }
+    }
 }
