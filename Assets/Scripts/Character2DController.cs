@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Character2DController : MonoState<Character2DController>
@@ -36,7 +34,7 @@ public class Character2DController : MonoState<Character2DController>
     [SerializeField]
     float jumpGraceTime = 0.20F;
 
-    [Header("Attack")]    
+    [Header("Attack")]
     [SerializeField]
     Transform attackPoint;
 
@@ -45,10 +43,18 @@ public class Character2DController : MonoState<Character2DController>
 
     [SerializeField]
     float reboundY = 5.0F;
- 
+
+    [Header("Attack Parameters")]
+    [SerializeField]
+    float attackRadius = 0.2F;
+
+    [SerializeField]
+    float attackDelay = 0.1F;
+
     [Header("Animation")]
     [SerializeField]
     public Animator animator;
+
 
     Rigidbody2D _rb;
 
@@ -90,17 +96,18 @@ public class Character2DController : MonoState<Character2DController>
     }
 
     void HandleInputs()
-    {     
+    {
         _direction = new Vector2(Input.GetAxisRaw("Horizontal"), 0.0F);
         _isMoving = _direction.x != 0.0F;
 
         _isJumpPressed = Input.GetButtonDown("Jump");
 
-        if (_isJumpPressed )
+        if (_isJumpPressed)
         {
             _lastTimeJumpPressed = Time.time;
         }
     }
+
     void HandleMove()
     {
         if (!_canMove)
@@ -123,7 +130,7 @@ public class Character2DController : MonoState<Character2DController>
         velocity.y = _rb.velocity.y;
         _rb.velocity = velocity;
     }
-    
+
     void HandleFlipX()
     {
         if (!_isMoving)
@@ -132,7 +139,7 @@ public class Character2DController : MonoState<Character2DController>
         }
 
         bool facingRight = _direction.x > 0.0F;
-        if (isFacingRight!=facingRight) 
+        if (isFacingRight != facingRight)
         {
             isFacingRight = facingRight;
             transform.Rotate(0.0F, 180.0F, 0.0F);
@@ -144,7 +151,7 @@ public class Character2DController : MonoState<Character2DController>
             _rb.drag = 0.0F;
         }
     }
-    
+
     void HandleJump()
     {
         if (_lastTimeJumpPressed > 0.0F && Time.time - _lastTimeJumpPressed <= jumpGraceTime)
@@ -174,7 +181,7 @@ public class Character2DController : MonoState<Character2DController>
         _isJumping = !IsGrounded();
 
         bool isJumping = animator.GetBool("isJumping");
-            if (_isJumping != isJumping)
+        if (_isJumping != isJumping)
         {
             animator.SetBool("isJumping", _isJumping);
         }
@@ -191,9 +198,8 @@ public class Character2DController : MonoState<Character2DController>
 
     bool IsGrounded()
     {
-        return
-        Physics2D.OverlapCapsule
-            (groundCheck.position, new Vector2(1.25F, 0.65F), 
+        return Physics2D.OverlapCapsule
+            (groundCheck.position, new Vector2(1.25F, 0.65F),
             CapsuleDirection2D.Horizontal, 0.0F, groundMask);
     }
 
@@ -206,16 +212,36 @@ public class Character2DController : MonoState<Character2DController>
 
         _isAttacking = true;
         _meleeDamage = damage;
+
         animator.SetBool("attack", true);
+
+        // Retraso antes de verificar colisiones para dar tiempo a la animación de ataque
+        StartCoroutine(DelayedAttackCheck());
+
+        StartCoroutine(ResetAttackState());
     }
 
-    public void Attack()
+    IEnumerator DelayedAttackCheck()
     {
-        Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPoint.position, 0.2F, enemyMask);   
-        foreach (Collider2D collider in enemies) 
+        yield return new WaitForSeconds(attackDelay);
+
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius);
+        foreach (Collider2D collider in enemies)
         {
-            // código para hacer daño
+            // Verificar si el objeto con el que colisionamos es un enemigo
+            EnemyController enemy = collider.GetComponent<EnemyController>();
+            if (enemy != null)
+            {
+                // Aplicar daño o eliminar al enemigo
+                enemy.TakeDamage(_meleeDamage);
+            }
         }
+    }
+
+    IEnumerator ResetAttackState()
+    {
+        yield return new WaitForSeconds(0.5f); // Ajusta el tiempo según la duración de tu animación de ataque
+
         _isAttacking = false;
         animator.SetBool("attack", false);
     }

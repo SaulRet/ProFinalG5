@@ -1,7 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public class HealthController : MonoBehaviour
 {
@@ -32,22 +32,29 @@ public class HealthController : MonoBehaviour
         _healthBarController.Initialize(health);
 
         _characterController = Character2DController.Instance;
-        _rb = GetComponent<Rigidbody2D>();
+
+        if (_characterController == null)
+        {
+            Debug.LogError("Character2DController.Instance is null. Make sure it's properly set up in your scene.");
+        }
+        else
+        {
+            _rb = GetComponent<Rigidbody2D>();
+        }
     }
 
     void Rebound(Vector2 contactPoint)
     {
-        _rb.velocity = new Vector2
-            (-reboundVelocity.x * contactPoint.x, reboundVelocity.y);
+        _rb.velocity = new Vector2(-reboundVelocity.x * contactPoint.x, reboundVelocity.y);
     }
+
     public void TakeDamage(float damage, Vector2 contactPoint)
     {
         health -= damage;
         if (health <= 0.0F)
         {
             MuerteJugador?.Invoke(this, EventArgs.Empty);
-            Destroy(gameObject);
-            
+            HandlePlayerDeath();  // Asegúrate de llamar HandlePlayerDeath también aquí si la salud llega a cero
         }
 
         _characterController.animator.SetTrigger("hit");
@@ -68,5 +75,11 @@ public class HealthController : MonoBehaviour
     {
         health += Mathf.Abs(value);
         _healthBarController.OnHeal.Invoke(value);
+    }
+
+    public void HandlePlayerDeath()
+    {
+        MuerteJugador?.Invoke(this, EventArgs.Empty);
+        Destroy(gameObject);
     }
 }

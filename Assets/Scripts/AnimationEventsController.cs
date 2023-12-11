@@ -1,11 +1,19 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AnimationEventsController : MonoBehaviour
 {
+    [SerializeField]
+    Character2DController characterController;
+
+    [SerializeField]
+    float damage = 100.0f;
+
     public void onAttack()
     {
-        Character2DController.Instance.Attack();
+        if (characterController != null)
+        {
+            characterController.Attack(damage);
+        }
     }
 }

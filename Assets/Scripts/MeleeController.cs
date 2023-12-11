@@ -16,11 +16,11 @@ public class MeleeController : MonoBehaviour
     {
         _attackTime -= Time.deltaTime;
         if (Input.GetButton("Fire1"))
-        { 
+        {
             if (_attackTime <= 0.0F)
             {
-            Character2DController.Instance.Attack(damage);
-            _attackTime = 1.0F / attackRate;
+                Character2DController.Instance.Attack(damage);
+                _attackTime = 1.0F / attackRate;
             }
         }
     }
